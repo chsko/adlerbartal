@@ -1,12 +1,27 @@
 'use client'
 import { Field, Legend } from '@headlessui/react'
 import { PhotoIcon, TrashIcon } from '@heroicons/react/24/outline'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import { NewRecipeResult } from '@/app/ny-oppskrift/actions'
 
-export const Photo = () => {
+export interface PhotoProps {
+    formResult: NewRecipeResult | null
+}
+
+export const Photo = ({ formResult }: PhotoProps) => {
     const [image, setImage] = useState<File>()
     const imageInputRef = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+        if (formResult?.success) resetImage()
+    }, [formResult])
+
+    const resetImage = () => {
+        imageInputRef.current && (imageInputRef.current.value = '')
+        setImage(undefined)
+    }
+
     return (
         <Field className="col-span-2 sm:col-start-3 sm:row-start-1 sm:row-span-4">
             <Legend className="flex flex-row items-center text-sm font-medium leading-6 dark:text-gray-300 text-gray-900">
@@ -14,11 +29,7 @@ export const Photo = () => {
                 {image && (
                     <TrashIcon
                         className={'ml-2 w-5 h-5 text-red-500'}
-                        onClick={(event) => {
-                            imageInputRef.current &&
-                                (imageInputRef.current.value = '')
-                            setImage(undefined)
-                        }}
+                        onClick={() => resetImage()}
                     />
                 )}
             </Legend>

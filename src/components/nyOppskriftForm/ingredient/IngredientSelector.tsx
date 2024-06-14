@@ -110,7 +110,8 @@ export const IngredientSelector = ({
                             )
                         }
                     >
-                        Opprett <span className="font-bold">"{query}"</span>
+                        Opprett{' '}
+                        <span className="font-bold">&quot;{query}&quot;</span>
                     </ComboboxOption>
                 )}
                 {filteredIngredients.map((ingredient) => (

@@ -61,7 +61,7 @@ const NyOppskrift = () => {
                                 <Title />
                                 <Duration />
                                 <Price />
-                                <Photo />
+                                <Photo formResult={formResult} />
                             </div>
                         </div>
 
