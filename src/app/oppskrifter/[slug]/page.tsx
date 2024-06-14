@@ -59,7 +59,7 @@ const Oppskrift = async ({ params }: { params: { slug: string } }) => {
                             : ` - opprettet ${toNorwegianDateTimeString(recipe.created_at)}`}
                     </p>
                 </div>
-                <div className="mt-10 grid grid-cols-2 grid-rows-1 gap-y-2">
+                <div className="mt-10 grid sm:grid-cols-2 sm:grid-rows-1 grid-rows-1 grid-cols-1 gap-y-2">
                     <div className="col-start-1">
                         <p className="flex flex-row items-center gap-2 text-md ">
                             <ClockIcon className="w-7 h-7" />
@@ -76,7 +76,7 @@ const Oppskrift = async ({ params }: { params: { slug: string } }) => {
                             </p>
                         </div>
                     </div>
-                    <div className="flex flex-col items-center overflow-hidden rounded-lg row-start-1 col-start-2 row-span-1">
+                    <div className="flex flex-col items-center overflow-hidden rounded-lg row-start-1 sm:col-start-2 row-span-1">
                         <Image
                             src={imageUrl.publicUrl}
                             alt={recipe.title}
