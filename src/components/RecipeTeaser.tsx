@@ -2,6 +2,7 @@ import { BanknotesIcon, ClockIcon } from '@heroicons/react/24/outline'
 import { toNorwegianDateTimeString } from '@/utils/utils'
 import Image from 'next/image'
 import { createClient } from '@/utils/supabase/server'
+import Link from 'next/link'
 
 export const RecipeTeaser = (props: { recipe: RecipeWithUser }) => {
     const supabase = createClient()
@@ -10,8 +11,8 @@ export const RecipeTeaser = (props: { recipe: RecipeWithUser }) => {
         .getPublicUrl(props.recipe.image ?? '')
 
     return (
-        <a
-            href={props.recipe.title}
+        <Link
+            href={`/oppskrifter/${props.recipe.slug}`}
             className="group"
         >
             <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
@@ -49,6 +50,6 @@ export const RecipeTeaser = (props: { recipe: RecipeWithUser }) => {
                     </p>
                 </div>
             </div>
-        </a>
+        </Link>
     )
 }
