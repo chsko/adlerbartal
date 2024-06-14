@@ -2,6 +2,7 @@
 
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
+import slugify from 'slugify'
 
 interface IngredientFormData {
     title: string
@@ -93,6 +94,7 @@ export async function newRecipe(
             amount: it.amount,
         })),
         user_id: userData.user.id,
+        slug: slugify(data.title, { lower: true }),
     })
 
     if (filePath && insertError) {
