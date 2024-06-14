@@ -1,8 +1,8 @@
 'use client'
 
-import {LoginSubmit} from '@/components/LoginSubmit'
-import {useFormState} from 'react-dom'
-import {login} from '@/app/login/actions'
+import { LoginSubmit } from '@/components/LoginSubmit'
+import { useFormState } from 'react-dom'
+import { login } from '@/app/login/actions'
 
 export default function LoggInn() {
     const [state, formAction] = useFormState(login, null)
@@ -19,11 +19,13 @@ export default function LoggInn() {
                     <form
                         className="space-y-6"
                         action={formAction}
-                        method="POST">
+                        method="POST"
+                    >
                         <div>
                             <label
                                 htmlFor="email"
-                                className="block text-sm font-medium leading-6 text-gray-900">
+                                className="block text-sm font-medium leading-6 text-gray-900"
+                            >
                                 Brukernavn
                             </label>
                             <div className="mt-2">
@@ -42,13 +44,15 @@ export default function LoggInn() {
                             <div className="flex items-center justify-between">
                                 <label
                                     htmlFor="password"
-                                    className="block text-sm font-medium leading-6 text-gray-900">
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                >
                                     Passord
                                 </label>
                                 <div className="text-sm">
                                     <a
                                         href="#"
-                                        className="font-semibold text-indigo-600 hover:text-indigo-500">
+                                        className="font-semibold text-indigo-600 hover:text-indigo-500"
+                                    >
                                         Glemt passord?
                                     </a>
                                 </div>

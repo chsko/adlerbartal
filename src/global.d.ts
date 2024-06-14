@@ -1,4 +1,4 @@
-import {Database as DB} from '@/types/supabase.ts'
+import { Database as DB } from '@/types/supabase.ts'
 
 declare global {
     type Database = DB

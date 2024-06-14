@@ -1,8 +1,8 @@
 'use server'
 
-import {createClient} from '@/utils/supabase/server'
-import {revalidatePath} from 'next/cache'
-import {redirect} from 'next/navigation'
+import { createClient } from '@/utils/supabase/server'
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
 export async function login(
     _: {
@@ -17,7 +17,7 @@ export async function login(
         password: formdata.get('password') as string,
     }
 
-    const {error} = await supabase.auth.signInWithPassword(data)
+    const { error } = await supabase.auth.signInWithPassword(data)
 
     if (error) {
         switch (error.message) {
