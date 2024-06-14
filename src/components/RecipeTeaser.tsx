@@ -1,9 +1,12 @@
-import {BanknotesIcon, ClockIcon} from '@heroicons/react/24/outline'
-import {toNorwegianDateTimeString} from '@/utils/utils'
+import { BanknotesIcon, ClockIcon } from '@heroicons/react/24/outline'
+import { toNorwegianDateTimeString } from '@/utils/utils'
 import Image from 'next/image'
 
-export const RecipeTeaser = (props: {recipe: RecipeWithUser}) => (
-    <a href={props.recipe.title} className="group">
+export const RecipeTeaser = (props: { recipe: RecipeWithUser }) => (
+    <a
+        href={props.recipe.title}
+        className="group"
+    >
         <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
             <Image
                 src={`https://fakeimg.pl/400x500`}

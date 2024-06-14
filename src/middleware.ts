@@ -1,13 +1,12 @@
-import {NextRequest, NextResponse} from 'next/server'
-import {updateSession} from '@/utils/supabase/middleware'
-import {createClient} from '@/utils/supabase/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { updateSession } from '@/utils/supabase/middleware'
+import { createClient } from '@/utils/supabase/server'
 
 export async function middleware(request: NextRequest) {
     const supabase = createClient()
 
-    const {data, error} = await supabase.auth.getUser()
+    const { data, error } = await supabase.auth.getUser()
     if (error || !data?.user) {
-        console.log('Var ikke logget inn', error)
         return NextResponse.redirect(new URL('/login', request.url))
     }
     return await updateSession(request)
