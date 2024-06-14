@@ -46,17 +46,18 @@ const Oppskrift = async ({ params }: { params: { slug: string } }) => {
                 <h1 className="mt-4 text-3xl lg:text-5xl dark:text-gray-300">
                     {recipe.title}
                 </h1>
-                <div className="mt-2 flex flex-row">
+                <div className="mt-2 flex sm:flex-row flex-col">
                     <p className={'text-md text-gray-500'}>
                         {recipe.profile!.first_name}{' '}
                         {recipe.profile!.middle_name &&
                             recipe.profile!.middle_name + ' '}
-                        {recipe.profile!.last_name}&nbsp;
+                        {recipe.profile!.last_name}
                     </p>
-                    <p className={'text-md text-gray-500'}>
+                    <p className="hidden sm:block">&nbsp;-&nbsp;</p>
+                    <p className="text-md text-gray-500 capitalize sm:normal-case">
                         {recipe.updated_at
-                            ? ` - sist oppdatert ${toNorwegianDateTimeString(recipe.updated_at)}`
-                            : ` - opprettet ${toNorwegianDateTimeString(recipe.created_at)}`}
+                            ? `sist oppdatert ${toNorwegianDateTimeString(recipe.updated_at)}`
+                            : `opprettet ${toNorwegianDateTimeString(recipe.created_at)}`}
                     </p>
                 </div>
                 <div className="mt-10 grid sm:grid-cols-2 sm:grid-rows-1 grid-rows-1 grid-cols-1 gap-y-2">
