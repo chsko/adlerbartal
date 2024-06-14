@@ -97,7 +97,6 @@ export async function newRecipe(
 
     if (filePath && insertError) {
         await supabase.storage.from('images').remove([filePath])
-        console.log(insertError)
         return {
             success: false,
             error: 'Kunne ikke lagre oppskrift. Prøv igjen.',
