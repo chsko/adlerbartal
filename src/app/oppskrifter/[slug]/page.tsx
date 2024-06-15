@@ -77,11 +77,11 @@ const Oppskrift = async ({ params }: { params: { slug: string } }) => {
                             </p>
                         </div>
                     </div>
-                    <div className="flex flex-col items-center overflow-hidden rounded-lg row-start-1 sm:col-start-2 row-span-1">
+                    <div className="flex flex-col items-center overflow-hidden row-start-1 sm:col-start-2 row-span-1">
                         <Image
                             src={imageUrl.publicUrl}
                             alt={recipe.title}
-                            className="h-[500px] w-[400px] object-cover object-center group-hover:opacity-75"
+                            className="h-[500px] w-[400px] object-cover rounded-lg object-center group-hover:opacity-75"
                             width={400}
                             height={500}
                         />
