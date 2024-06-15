@@ -23,7 +23,7 @@ export const Photo = ({ formResult }: PhotoProps) => {
     }
 
     return (
-        <Field className="col-span-2 sm:col-start-3 sm:row-start-1 sm:row-span-4">
+        <Field className="col-span-1">
             <Legend className="flex flex-row items-center text-sm font-medium leading-6 dark:text-gray-300 text-gray-900">
                 Bilde av matretten
                 {image && (

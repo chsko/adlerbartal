@@ -10,10 +10,11 @@ import { Description, Field, Label, Legend } from '@headlessui/react'
 import { useFormState, useFormStatus } from 'react-dom'
 import { newRecipe, NewRecipeResult } from '@/app/ny-oppskrift/actions'
 import { Spinner } from '@/components/Spinner'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { ArrowLongLeftIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
+import { TagSelector } from '@/components/nyOppskriftForm/tag/TagSelector'
 
 const NyOppskrift = () => {
     const [formResult, formAction] = useFormState<
@@ -22,12 +23,25 @@ const NyOppskrift = () => {
     >(newRecipe, null)
     const formRef = useRef<HTMLFormElement>(null)
 
+    const [selectedTags, setSelectedTags] = useState<string[]>([])
+
     useEffect(() => {
         if (formResult?.success) {
             formRef.current?.reset()
+            setSelectedTags([])
             toast.success('Oppskrift lagret!')
         }
     }, [formResult])
+
+    const handleSubmit = (formData: FormData) => {
+        const existingDataToBeAppended = Array.from(formData.entries())
+        const finalFormData = new FormData()
+        existingDataToBeAppended.forEach(([key, value]) =>
+            finalFormData.append(key, value)
+        )
+        selectedTags.forEach((it) => finalFormData.append('tags', it))
+        formAction(finalFormData)
+    }
 
     return (
         <div className="bg-white dark:bg-gray-800">
@@ -45,7 +59,7 @@ const NyOppskrift = () => {
                 </h1>
                 <form
                     ref={formRef}
-                    action={formAction}
+                    action={handleSubmit}
                 >
                     <div className="space-y-12">
                         <div className="border-b border-gray-900/10 pb-12">
@@ -57,10 +71,18 @@ const NyOppskrift = () => {
                             <h2 className="mt-10 text-base font-semibold leading-7 dark:text-gray-300 text-gray-900">
                                 Innledende informasjon
                             </h2>
-                            <div className="mt-4 grid grid-cols-2 sm:grid-rows-4 gap-x-6 gap-y-8 sm:grid-cols-4">
-                                <Title />
-                                <Duration />
-                                <Price />
+                            <div className="mt-4 flex flex-col sm:grid sm:grid-cols-2 gap-x-6 gap-y-8">
+                                <div className="flex flex-col gap-10 col-span-1 h-fit">
+                                    <Title />
+                                    <div className="flex flex-row gap-6">
+                                        <Duration />
+                                        <Price />
+                                    </div>
+                                    <TagSelector
+                                        selectedTags={selectedTags}
+                                        setSelectedTags={setSelectedTags}
+                                    />
+                                </div>
                                 <Photo formResult={formResult} />
                             </div>
                         </div>

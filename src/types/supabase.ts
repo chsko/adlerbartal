@@ -87,6 +87,7 @@ export type Database = {
                     ingredients: Json
                     price: number
                     slug: string | null
+                    tags: string[]
                     title: string
                     updated_at: string | null
                     user_id: string
@@ -100,6 +101,7 @@ export type Database = {
                     ingredients?: Json
                     price: number
                     slug?: string | null
+                    tags?: string[]
                     title?: string
                     updated_at?: string | null
                     user_id: string
@@ -113,6 +115,7 @@ export type Database = {
                     ingredients?: Json
                     price?: number
                     slug?: string | null
+                    tags?: string[]
                     title?: string
                     updated_at?: string | null
                     user_id?: string

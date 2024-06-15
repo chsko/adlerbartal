@@ -3,7 +3,7 @@
 import { Field, Input, Label } from '@headlessui/react'
 
 export const Duration = () => (
-    <Field className="col-span-1 col-start-1 row-start-2">
+    <Field>
         <Label
             htmlFor="duration"
             className="block text-sm font-medium leading-6 dark:text-gray-300 text-gray-900"

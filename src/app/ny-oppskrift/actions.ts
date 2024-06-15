@@ -11,6 +11,7 @@ interface IngredientFormData {
     image?: File
     steps: string
     ingredients: Ingredient[]
+    tags: string[]
 }
 
 interface Ingredient {
@@ -62,6 +63,7 @@ export async function newRecipe(
         image: formdata?.get('file-upload') as File | undefined,
         steps: formdata.get('steps') as string,
         ingredients: Array.from(ingredients.values()),
+        tags: formdata.getAll('tags') as string[],
     }
 
     let filePath: string | undefined
@@ -95,6 +97,7 @@ export async function newRecipe(
         })),
         user_id: userData.user.id,
         slug: slugify(data.title, { lower: true }),
+        tags: data.tags,
     })
 
     if (filePath && insertError) {

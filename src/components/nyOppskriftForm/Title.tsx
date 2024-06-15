@@ -4,7 +4,7 @@ import { Field, Input, Label } from '@headlessui/react'
 
 export const Title = () => {
     return (
-        <Field className="sm:col-span-2 sm:col-start-1 col-span-2">
+        <Field>
             <Label
                 htmlFor="title"
                 className="block text-sm font-medium leading-6 dark:text-gray-300 text-gray-900"
