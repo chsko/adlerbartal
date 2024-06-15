@@ -49,7 +49,7 @@ export const IngredientSelector = ({
 
     useEffect(() => {
         getIngredients().then()
-    })
+    }, [])
 
     const filteredIngredients =
         query === ''
