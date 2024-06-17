@@ -95,7 +95,7 @@ export const IngredientSelector = ({
                 anchor="bottom"
                 className="empty:hidden w-[var(--input-width)] rounded-md border bg-white py-1 [--anchor-gap:var(--spacing-1)] [--anchor-max-height:15rem] overflow-auto text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
             >
-                {query.length > 0 && filteredIngredients.length === 0 && (
+                {query && !filteredIngredients.includes(query) && (
                     <ComboboxOption
                         value={query}
                         className={({ focus }) =>

@@ -44,16 +44,11 @@ export const TagSelector = ({
 }: TagSelectorProps) => {
     const [query, setQuery] = useState('')
     const [existingTags, setExistingTags] = useState<string[]>([])
-    const [currentTag, setCurrentTag] = useState<string | null>(null)
 
     const supabase = createClient()
 
     const getTags = useCallback(async () => {
-        const { data: tags, error } = await supabase.rpc('get_unique_types', {
-            table_name: 'recipe',
-            column_name: 'ingredients',
-            field_name: 'ingredient',
-        })
+        const { data: tags, error } = await supabase.rpc('get_unique_tags')
 
         if (error) return
         setExistingTags(tags)
@@ -65,6 +60,21 @@ export const TagSelector = ({
 
     const removeTag = (tag: string) => {
         setSelectedTags(selectedTags.filter((it) => it !== tag))
+        setExistingTags(existingTags.filter((it) => it !== tag))
+    }
+
+    const selectTag = (tag: string | null) => {
+        if (tag) {
+            const alreadyExists =
+                selectedTags.find(
+                    (it) => it.toLowerCase() === tag.toLowerCase()
+                ) !== undefined
+
+            if (!alreadyExists) {
+                setSelectedTags([...selectedTags, tag])
+                setExistingTags([...existingTags, tag])
+            }
+        }
     }
 
     const filteredTags =
@@ -79,34 +89,18 @@ export const TagSelector = ({
             <div className="w-fit">
                 <Combobox
                     onClose={() => setQuery('')}
-                    value={currentTag}
-                    onChange={(value) => {
-                        if (value && currentTag) {
-                            const alreadyExists =
-                                selectedTags.find(
-                                    (it) =>
-                                        it.toLowerCase() ===
-                                        currentTag.toLowerCase()
-                                ) !== undefined
-
-                            if (!alreadyExists)
-                                setSelectedTags([...selectedTags, currentTag])
-                        }
-                        setCurrentTag(null)
-                    }}
+                    value={query}
+                    onChange={selectTag}
                 >
                     <div className="relative">
                         <ComboboxInput
-                            onInput={(it) =>
-                                it.currentTarget.setCustomValidity('')
-                            }
+                            id="foo"
+                            name="foo"
                             aria-label="Nøkkelord"
                             placeholder="Nøkkelord"
+                            autoComplete={undefined}
                             displayValue={(tag: string) => tag}
-                            onChange={(event) => {
-                                setQuery(event.target.value)
-                                setCurrentTag(event.target.value)
-                            }}
+                            onChange={(event) => setQuery(event.target.value)}
                             className="block w-full dark:placeholder:text-gray-500 dark:bg-gray-300 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm sm:leading-6"
                         />
                         <ComboboxButton className="group absolute inset-y-0 right-0 px-2.5">
@@ -122,7 +116,7 @@ export const TagSelector = ({
                         anchor="bottom"
                         className="empty:hidden w-[var(--input-width)] rounded-md border bg-white py-1 [--anchor-gap:var(--spacing-1)] [--anchor-max-height:15rem] overflow-auto text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
                     >
-                        {query.length > 0 && filteredTags.length === 0 && (
+                        {query && !filteredTags.includes(query) && (
                             <ComboboxOption
                                 value={query}
                                 className={({ focus }) =>
@@ -160,6 +154,16 @@ export const TagSelector = ({
                         ))}
                     </ComboboxOptions>
                 </Combobox>
+                {/*<input*/}
+                {/*    type="text"*/}
+                {/*    name="foo"*/}
+                {/*    list="foolist"*/}
+                {/*/>*/}
+                {/*<datalist id="foolist">*/}
+                {/*    {filteredTags.map((it) => (*/}
+                {/*        <option value={it} />*/}
+                {/*    ))}*/}
+                {/*</datalist>*/}
             </div>
             {selectedTags.length > 0 && (
                 <div className="flex flex-row gap-2 w-full sm:w-fit flex-wrap">

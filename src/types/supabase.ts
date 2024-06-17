@@ -135,6 +135,10 @@ export type Database = {
             [_ in never]: never
         }
         Functions: {
+            get_unique_tags: {
+                Args: Record<PropertyKey, never>
+                Returns: string[]
+            }
             get_unique_types:
                 | {
                       Args: {
