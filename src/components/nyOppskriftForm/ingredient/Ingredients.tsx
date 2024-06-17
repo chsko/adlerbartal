@@ -1,42 +1,25 @@
-'use client'
-
 import { Button, Fieldset } from '@headlessui/react'
-import { useEffect, useState } from 'react'
 import { PlusIcon } from '@heroicons/react/24/outline'
-import { IngredientComponent } from '@/components/nyOppskriftForm/ingredient/IngredientComponent'
-import { NewRecipeResult } from '@/app/ny-oppskrift/actions'
+import {
+    Ingredient,
+    IngredientComponent,
+} from '@/components/nyOppskriftForm/ingredient/IngredientComponent'
+import { nanoid } from 'nanoid'
 
 export interface IngredientsProps {
-    formResult: NewRecipeResult | null
+    ingredients: Ingredient[]
+    addIngredient: (ingredient: Ingredient) => void
+    removeIngredient: (ingredient: Ingredient) => void
 }
-export const Ingredients = ({ formResult }: IngredientsProps) => {
-    const removeIngredientComponent = (index: number) => {
-        setIngredientComponents(
-            ingredientComponents.filter(
-                (componentIndex) => componentIndex !== index
-            )
-        )
-    }
-
-    const [ingredientComponents, setIngredientComponents] = useState<number[]>([
-        0,
-    ])
-
-    useEffect(() => {
-        if (formResult?.success) {
-            setIngredientComponents([0])
-        }
-    }, [formResult])
-
+export const Ingredients = ({
+    ingredients,
+    addIngredient,
+    removeIngredient,
+}: IngredientsProps) => {
     return (
         <Fieldset className="mt-4">
             <Button
-                onClick={() =>
-                    setIngredientComponents([
-                        ...ingredientComponents,
-                        ingredientComponents.length + 1,
-                    ])
-                }
+                onClick={() => addIngredient({ id: nanoid() })}
                 type="button"
                 className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
@@ -47,13 +30,16 @@ export const Ingredients = ({ formResult }: IngredientsProps) => {
                 Legg til
             </Button>
             <ul className="mt-2">
-                {ingredientComponents.map((it) => (
-                    <IngredientComponent
-                        key={it}
-                        index={it}
-                        unmountSelf={removeIngredientComponent}
-                    />
-                ))}
+                {ingredients.map((it, idx) => {
+                    return (
+                        <IngredientComponent
+                            key={it.id}
+                            index={idx}
+                            unmountSelf={removeIngredient}
+                            ingredient={it}
+                        />
+                    )
+                })}
             </ul>
         </Fieldset>
     )

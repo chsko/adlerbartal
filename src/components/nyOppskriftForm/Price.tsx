@@ -2,7 +2,11 @@
 
 import { Field, Input, Label } from '@headlessui/react'
 
-export const Price = () => (
+export interface PriceProps {
+    value?: number
+}
+
+export const Price = ({ value }: PriceProps) => (
     <Field>
         <Label
             htmlFor="price"
@@ -16,6 +20,7 @@ export const Price = () => (
                 name="price"
                 id="price"
                 required
+                defaultValue={value}
                 onInvalid={(it) =>
                     it.currentTarget.setCustomValidity('Du må oppgi en pris')
                 }

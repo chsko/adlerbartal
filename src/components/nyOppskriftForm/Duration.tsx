@@ -2,7 +2,11 @@
 
 import { Field, Input, Label } from '@headlessui/react'
 
-export const Duration = () => (
+export interface DurationProps {
+    value?: number
+}
+
+export const Duration = ({ value }: DurationProps) => (
     <Field>
         <Label
             htmlFor="duration"
@@ -15,6 +19,7 @@ export const Duration = () => (
                 type="number"
                 name="duration"
                 required
+                defaultValue={value}
                 onInvalid={(it) =>
                     it.currentTarget.setCustomValidity('Du må oppgi tidsbruk')
                 }

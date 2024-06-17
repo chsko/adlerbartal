@@ -39,7 +39,7 @@ export const TagSelector = ({
     }, [supabase])
 
     useEffect(() => {
-        getTags().then()
+        getTags()
     }, [])
 
     const removeTag = (tag: string) => {
@@ -121,9 +121,9 @@ export const TagSelector = ({
                                 </span>
                             </ComboboxOption>
                         )}
-                        {filteredTags.map((tag) => (
+                        {filteredTags.map((tag, idx) => (
                             <ComboboxOption
-                                key={tag}
+                                key={idx}
                                 value={tag}
                                 className={({ focus }) =>
                                     classNames(
@@ -145,7 +145,7 @@ export const TagSelector = ({
                         <RemovableTag
                             onRemove={removeTag}
                             tag={it}
-                            key={idx}
+                            key={`tag-${it}-${idx}`}
                         />
                     ))}
                 </div>

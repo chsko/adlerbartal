@@ -2,7 +2,11 @@
 
 import { Field, Input, Label } from '@headlessui/react'
 
-export const Title = () => {
+export interface TitleProps {
+    value?: string
+}
+
+export const Title = ({ value }: TitleProps) => {
     return (
         <Field>
             <Label
@@ -20,6 +24,7 @@ export const Title = () => {
                             'Du må oppgi en overskrift'
                         )
                     }
+                    defaultValue={value}
                     onInput={(it) => it.currentTarget.setCustomValidity('')}
                     name="title"
                     id="title"

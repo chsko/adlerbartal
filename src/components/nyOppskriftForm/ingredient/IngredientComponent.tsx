@@ -6,54 +6,72 @@ import { AmountSelector } from '@/components/nyOppskriftForm/ingredient/AmountSe
 import { TrashIcon } from '@heroicons/react/24/outline'
 
 export interface Ingredient {
-    id: number
-    name: string
-}
-
-export interface Ingredient {
-    type: string
-    amount: string
-    unit: string
+    id?: string
+    ingredient?: string
+    amount?: number
+    unit?: string
 }
 
 export interface IngredientComponentProps {
     index: number
-    unmountSelf: (index: number) => void
+    unmountSelf: (ingredient: Ingredient) => void
+    ingredient?: Ingredient
 }
 
 export const IngredientComponent = ({
     index,
     unmountSelf,
+    ingredient,
 }: IngredientComponentProps) => {
     const [selectedIngredient, setSelectedIngredient] =
-        useState<Ingredient | null>(null)
-    const [selectedUnit, setSelectedUnit] = useState<string | null>(null)
-    const [selectedAmount, setSelectedAmount] = useState<number>()
+        useState<Ingredient | null>(ingredient ?? null)
+
+    const setSelectedType = (type: string | null) => {
+        setSelectedIngredient({
+            ...selectedIngredient,
+            ingredient: type ?? undefined,
+        })
+    }
+
+    const setSelectedUnit = (unit: string | null) => {
+        setSelectedIngredient({
+            ...selectedIngredient,
+            unit: unit ?? undefined,
+        })
+    }
+
+    const setSelectedAmount = (amount: number | null) => {
+        setSelectedIngredient({
+            ...selectedIngredient,
+            amount: amount ?? undefined,
+        })
+    }
+
     return (
         <div className="flex flex-row items-center gap-2 mt-2">
             <Fieldset className="grid grid-cols-4 md:gap-4 gap-2">
                 <IngredientSelector
                     index={index}
                     selectedIngredient={selectedIngredient}
-                    setSelectedIngredient={setSelectedIngredient}
+                    setSelectedType={setSelectedType}
                 />
                 <UnitSelector
                     index={index}
                     disabled={!selectedIngredient}
-                    selectedUnit={selectedUnit}
+                    selectedIngredient={selectedIngredient}
                     setSelectedUnit={setSelectedUnit}
                 />
                 <AmountSelector
                     index={index}
-                    disabled={!selectedUnit}
-                    selectedAmount={selectedAmount}
+                    disabled={!selectedIngredient?.unit}
+                    selectedIngredient={selectedIngredient}
                     setSelectedAmount={setSelectedAmount}
                 />
             </Fieldset>
             <Button>
                 <TrashIcon
                     className="w-5 h-5 text-red-500"
-                    onClick={() => unmountSelf(index)}
+                    onClick={() => ingredient && unmountSelf(ingredient)}
                 />
             </Button>
         </div>

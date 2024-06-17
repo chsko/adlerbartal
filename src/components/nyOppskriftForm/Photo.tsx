@@ -7,14 +7,15 @@ import { NewRecipeResult } from '@/app/ny-oppskrift/actions'
 
 export interface PhotoProps {
     formResult: NewRecipeResult | null
+    value?: string
 }
 
-export const Photo = ({ formResult }: PhotoProps) => {
-    const [image, setImage] = useState<File>()
+export const Photo = ({ formResult, value }: PhotoProps) => {
+    const [image, setImage] = useState<File | string | undefined>(value)
     const imageInputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
-        if (formResult?.success) resetImage()
+        if (formResult?.resultType === 'INSERTED') resetImage()
     }, [formResult])
 
     const resetImage = () => {
@@ -69,7 +70,11 @@ export const Photo = ({ formResult }: PhotoProps) => {
                 {image && (
                     <div className="w-[200px] h-[250x]">
                         <Image
-                            src={URL.createObjectURL(image)}
+                            src={
+                                isFile(image)
+                                    ? URL.createObjectURL(image)
+                                    : image
+                            }
                             alt={'image'}
                             width={500}
                             height={400}
@@ -82,4 +87,8 @@ export const Photo = ({ formResult }: PhotoProps) => {
             </div>
         </Field>
     )
+}
+
+const isFile = (value: string | File): value is File => {
+    return (value as File).size !== undefined
 }

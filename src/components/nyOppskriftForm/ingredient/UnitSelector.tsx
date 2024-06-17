@@ -5,27 +5,22 @@ import {
     ComboboxOption,
     ComboboxOptions,
 } from '@headlessui/react'
-import {
-    Dispatch,
-    SetStateAction,
-    useCallback,
-    useEffect,
-    useState,
-} from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import classNames from 'classnames'
 import { createClient } from '@/utils/supabase/client'
+import { Ingredient } from '@/components/nyOppskriftForm/ingredient/IngredientComponent'
 
 export interface UnitSelectorProps {
     index: number
-    selectedUnit: string | null
-    setSelectedUnit: Dispatch<SetStateAction<string | null>>
+    selectedIngredient: Ingredient | null
+    setSelectedUnit: (unit: string | null) => void
     disabled: boolean
 }
 
 export const UnitSelector = ({
     index,
-    selectedUnit,
+    selectedIngredient,
     setSelectedUnit,
     disabled,
 }: UnitSelectorProps) => {
@@ -47,7 +42,7 @@ export const UnitSelector = ({
 
     useEffect(() => {
         getUnits().then()
-    })
+    }, [])
 
     const filteredUnits =
         query === ''
@@ -59,7 +54,8 @@ export const UnitSelector = ({
     return (
         <Combobox
             disabled={disabled}
-            value={selectedUnit}
+            value={selectedIngredient?.unit ?? ''}
+            defaultValue={selectedIngredient?.unit}
             onChange={setSelectedUnit}
             onClose={() => setQuery('')}
         >
@@ -75,6 +71,7 @@ export const UnitSelector = ({
                             'Du må velge en enhet'
                         )
                     }
+                    defaultValue={selectedIngredient?.unit}
                     onInput={(it) => it.currentTarget.setCustomValidity('')}
                     placeholder="Enhet"
                     displayValue={(unit: string) => unit}

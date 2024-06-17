@@ -8,25 +8,19 @@ import {
 import { ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import classNames from 'classnames'
 import { Ingredient } from '@/components/nyOppskriftForm/ingredient/IngredientComponent'
-import {
-    Dispatch,
-    SetStateAction,
-    useCallback,
-    useEffect,
-    useState,
-} from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 
 export interface IngredientSelectorProps {
     index: number
     selectedIngredient: Ingredient | null
-    setSelectedIngredient: Dispatch<SetStateAction<Ingredient | null>>
+    setSelectedType: (unit: string | null) => void
 }
 
 export const IngredientSelector = ({
     index,
     selectedIngredient,
-    setSelectedIngredient,
+    setSelectedType,
 }: IngredientSelectorProps) => {
     const [query, setQuery] = useState('')
     const [ingredients, setIngredients] = useState<string[]>([])
@@ -60,8 +54,8 @@ export const IngredientSelector = ({
 
     return (
         <Combobox
-            value={selectedIngredient}
-            onChange={setSelectedIngredient}
+            onChange={setSelectedType}
+            defaultValue={selectedIngredient?.ingredient}
             onClose={() => setQuery('')}
         >
             <div className="relative col-span-2">
@@ -74,6 +68,7 @@ export const IngredientSelector = ({
                             'Du må velge en ingrediens'
                         )
                     }
+                    defaultValue={selectedIngredient?.ingredient}
                     onInput={(it) => it.currentTarget.setCustomValidity('')}
                     aria-label="Ingrediens"
                     placeholder="Ingrediens"

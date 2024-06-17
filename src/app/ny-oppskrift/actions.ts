@@ -1,10 +1,10 @@
 'use server'
 
 import { createClient } from '@/utils/supabase/server'
-import { revalidatePath } from 'next/cache'
 import slugify from 'slugify'
 
 interface IngredientFormData {
+    id: number | undefined
     title: string
     duration: number
     price: number
@@ -21,7 +21,7 @@ interface Ingredient {
 }
 
 export interface NewRecipeResult {
-    success: boolean
+    resultType: 'ERROR' | 'INSERTED' | 'UPDATED'
     error?: string
 }
 
@@ -56,7 +56,9 @@ export async function newRecipe(
         }
     })
 
+    const id = formdata?.get('id') as string | undefined
     const data: IngredientFormData = {
+        id: id ? Number.parseInt(id) : undefined,
         title: formdata.get('title') as string,
         price: Number.parseFloat(formdata.get('price') as string),
         duration: Number.parseInt(formdata.get('duration') as string),
@@ -78,39 +80,42 @@ export async function newRecipe(
 
         if (uploadError) {
             return {
-                success: false,
+                resultType: 'ERROR',
                 error: 'Kunne ikke laste opp fil. Prøv igjen.',
             }
         }
     }
 
-    const { error: insertError } = await supabase.from('recipe').insert({
-        title: data.title,
-        price: data.price,
-        duration: data.duration,
-        image: filePath,
-        content: data.steps,
-        ingredients: data.ingredients.map((it) => ({
-            ingredient: it.ingredient,
-            unit: it.unit,
-            amount: it.amount,
-        })),
-        user_id: userData.user.id,
-        slug: slugify(data.title, { lower: true }),
-        tags: data.tags,
-    })
+    const { error: insertError } = await supabase.from('recipe').upsert(
+        {
+            id: data.id,
+            title: data.title,
+            price: data.price,
+            duration: data.duration,
+            image: filePath,
+            content: data.steps,
+            ingredients: data.ingredients.map((it) => ({
+                ingredient: it.ingredient,
+                unit: it.unit,
+                amount: it.amount,
+            })),
+            user_id: userData.user.id,
+            slug: slugify(data.title, { lower: true }),
+            tags: data.tags,
+        },
+        { onConflict: 'id' }
+    )
 
     if (filePath && insertError) {
         await supabase.storage.from('images').remove([filePath])
         return {
-            success: false,
+            resultType: 'ERROR',
             error: 'Kunne ikke lagre oppskrift. Prøv igjen.',
         }
     }
 
-    revalidatePath('/ny-oppskrift')
     return {
-        success: true,
+        resultType: data.id ? 'UPDATED' : 'INSERTED',
     }
 }
 
