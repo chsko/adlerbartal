@@ -7,6 +7,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { toNorwegianDateTimeString } from '@/utils/utils'
 import Image from 'next/image'
+import { ReadOnlyTag } from '@/components/nyOppskriftForm/tag/RemovableTag'
 
 interface Ingredient {
     ingredient: string
@@ -36,18 +37,16 @@ const Oppskrift = async ({ params }: { params: { slug: string } }) => {
         <div className="bg-white dark:bg-gray-800">
             <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
                 <Link
-                    className={
-                        'flex flex-row items-center gap-2 hover:text-gray-500'
-                    }
-                    href={'/'}
+                    className="flex flex-row items-center gap-2 hover:text-gray-500"
+                    href="/"
                 >
-                    <ArrowLongLeftIcon className={'w-6 h-6'} /> Tilbake
+                    <ArrowLongLeftIcon className="w-6 h-6" /> Tilbake
                 </Link>
                 <h1 className="mt-4 text-3xl lg:text-5xl dark:text-gray-300">
                     {recipe.title}
                 </h1>
                 <div className="mt-2 flex sm:flex-row flex-col">
-                    <p className={'text-md text-gray-500'}>
+                    <p className="text-md text-gray-500">
                         {recipe.profile!.first_name}{' '}
                         {recipe.profile!.middle_name &&
                             recipe.profile!.middle_name + ' '}
@@ -66,10 +65,18 @@ const Oppskrift = async ({ params }: { params: { slug: string } }) => {
                             <ClockIcon className="w-7 h-7" />
                             {recipe.duration} minutter
                         </p>
-                        <p className="flex flex-row items-center gap-2 text-md">
+                        <p className="flex flex-row items-center gap-2 text-md mt-4">
                             <BanknotesIcon className="h-7 w-7" />
                             {recipe.price} kr
                         </p>
+                        <div className="mt-4">
+                            {recipe.tags.map((it, idx) => (
+                                <ReadOnlyTag
+                                    tag={it}
+                                    key={idx}
+                                />
+                            ))}
+                        </div>
                         <div className="flex flex-col gap-2 mt-10">
                             <p className="text-2xl">Forklaring</p>
                             <p className="whitespace-pre-wrap">

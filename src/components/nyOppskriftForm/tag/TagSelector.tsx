@@ -15,23 +15,7 @@ import {
 } from '@headlessui/react'
 import { ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import classNames from 'classnames'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-
-interface TagProps {
-    onRemove: (tag: string) => void
-    value: string
-}
-export const Tag = ({ onRemove, value }: TagProps) => {
-    return (
-        <div className="flex flex-row items-center p-1 px-2 text-sm w-min h-min bg-indigo-400 rounded-full border-indigo-500 border border-solid text-gray-50">
-            {value}
-            <XMarkIcon
-                className="w-5 h-5 hover:text-gray-500 ml-1"
-                onClick={() => onRemove(value)}
-            />
-        </div>
-    )
-}
+import { RemovableTag } from '@/components/nyOppskriftForm/tag/RemovableTag'
 
 export interface TagSelectorProps {
     selectedTags: string[]
@@ -154,23 +138,13 @@ export const TagSelector = ({
                         ))}
                     </ComboboxOptions>
                 </Combobox>
-                {/*<input*/}
-                {/*    type="text"*/}
-                {/*    name="foo"*/}
-                {/*    list="foolist"*/}
-                {/*/>*/}
-                {/*<datalist id="foolist">*/}
-                {/*    {filteredTags.map((it) => (*/}
-                {/*        <option value={it} />*/}
-                {/*    ))}*/}
-                {/*</datalist>*/}
             </div>
             {selectedTags.length > 0 && (
                 <div className="flex flex-row gap-2 w-full sm:w-fit flex-wrap">
                     {selectedTags.map((it, idx) => (
-                        <Tag
+                        <RemovableTag
                             onRemove={removeTag}
-                            value={it}
+                            tag={it}
                             key={idx}
                         />
                     ))}
