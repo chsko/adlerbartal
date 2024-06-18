@@ -91,6 +91,7 @@ const Oppskrift = async ({ params }: { params: { slug: string } }) => {
                             className="h-[500px] w-[400px] object-cover rounded-lg object-center group-hover:opacity-75"
                             width={400}
                             height={500}
+                            priority
                         />
                     </div>
                 </div>

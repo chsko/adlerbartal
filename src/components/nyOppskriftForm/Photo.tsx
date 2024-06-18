@@ -78,9 +78,8 @@ export const Photo = ({ formResult, value }: PhotoProps) => {
                             alt={'image'}
                             width={500}
                             height={400}
-                            className={
-                                'h-[250px] w-[200px] object-cover object-center'
-                            }
+                            priority
+                            className="h-[250px] w-[200px] object-cover object-center"
                         />
                     </div>
                 )}
