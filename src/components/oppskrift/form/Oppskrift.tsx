@@ -178,13 +178,15 @@ const Buttons = () => {
     return (
         <div className="mt-6 flex items-center justify-end gap-x-6">
             {pending && <Spinner />}
-            <button
-                disabled={pending}
-                type="button"
-                className="text-sm font-semibold leading-6 dark:text-gray-300 text-gray-900 disabled:text-gray-400"
-            >
-                Avbryt
-            </button>
+            <Link href={'/'}>
+                <button
+                    disabled={pending}
+                    type="button"
+                    className="text-sm font-semibold leading-6 dark:text-gray-300 text-gray-900 disabled:text-gray-400 sm:hover:text-gray-500"
+                >
+                    Avbryt
+                </button>
+            </Link>
             <button
                 disabled={pending}
                 type="submit"
