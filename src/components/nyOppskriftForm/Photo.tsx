@@ -75,7 +75,7 @@ export const Photo = ({ formResult, value }: PhotoProps) => {
                                     ? URL.createObjectURL(image)
                                     : image
                             }
-                            alt={'image'}
+                            alt="Photo av retten"
                             width={500}
                             height={400}
                             priority
