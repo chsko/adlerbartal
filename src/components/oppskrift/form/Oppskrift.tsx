@@ -23,8 +23,19 @@ export interface OppskriftProps {
     description: string
     recipe?: RecipeWithUser
     image?: string
+    units: string[]
+    types: string[]
+    tags: string[]
 }
-const Oppskrift = ({ heading, description, recipe, image }: OppskriftProps) => {
+const Oppskrift = ({
+    heading,
+    description,
+    recipe,
+    image,
+    units,
+    types,
+    tags,
+}: OppskriftProps) => {
     const [result, formAction] = useFormState(newRecipe, null)
     const formRef = useRef<HTMLFormElement>(null)
 
@@ -104,6 +115,7 @@ const Oppskrift = ({ heading, description, recipe, image }: OppskriftProps) => {
                                     <TagSelector
                                         selectedTags={selectedTags}
                                         setSelectedTags={setSelectedTags}
+                                        tags={tags}
                                     />
                                 </div>
                                 <Photo
@@ -140,6 +152,8 @@ const Oppskrift = ({ heading, description, recipe, image }: OppskriftProps) => {
                                     ingredients={ingredients}
                                     addIngredient={addIngredient}
                                     removeIngredient={removeIngredient}
+                                    units={units}
+                                    types={types}
                                 />
                             </Field>
                         </div>

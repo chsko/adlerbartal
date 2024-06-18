@@ -8,11 +8,15 @@ export interface IngredientsProps {
     ingredients: Ingredient[]
     addIngredient: (ingredient: Ingredient) => void
     removeIngredient: (ingredient: Ingredient) => void
+    units: string[]
+    types: string[]
 }
 export const Ingredients = ({
     ingredients,
     addIngredient,
     removeIngredient,
+    units,
+    types,
 }: IngredientsProps) => {
     return (
         <Fieldset className="mt-4">
@@ -35,6 +39,8 @@ export const Ingredients = ({
                             index={idx}
                             unmountSelf={removeIngredient}
                             ingredient={it}
+                            units={units}
+                            ingredientTypes={types}
                         />
                     )
                 })}

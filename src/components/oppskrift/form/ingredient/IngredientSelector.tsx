@@ -7,43 +7,24 @@ import {
 } from '@headlessui/react'
 import { ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import classNames from 'classnames'
-import { useCallback, useEffect, useState } from 'react'
-import { createClient } from '@/lib/utils/supabase/client'
+import { useState } from 'react'
 import { Ingredient } from '@/types/domain'
 
 export interface IngredientSelectorProps {
     index: number
     selectedIngredient: Ingredient | null
     setSelectedType: (unit: string | null) => void
+    ingredientTypes: string[]
 }
 
 export const IngredientSelector = ({
     index,
     selectedIngredient,
     setSelectedType,
+    ingredientTypes,
 }: IngredientSelectorProps) => {
     const [query, setQuery] = useState('')
-    const [ingredients, setIngredients] = useState<string[]>([])
-
-    const supabase = createClient()
-
-    const getIngredients = useCallback(async () => {
-        const { data: ingredients, error } = await supabase.rpc(
-            'get_unique_types',
-            {
-                table_name: 'recipe',
-                column_name: 'ingredients',
-                field_name: 'ingredient',
-            }
-        )
-
-        if (error) return
-        setIngredients(ingredients)
-    }, [supabase])
-
-    useEffect(() => {
-        getIngredients().then()
-    }, [])
+    const [ingredients, setIngredients] = useState<string[]>(ingredientTypes)
 
     const filteredIngredients =
         query === ''

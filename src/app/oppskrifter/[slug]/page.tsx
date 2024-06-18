@@ -1,4 +1,3 @@
-import { createClient } from '@/lib/utils/supabase/server'
 import Link from 'next/link'
 import {
     ArrowLongLeftIcon,
@@ -8,7 +7,7 @@ import {
 import { toNorwegianDateTimeString } from '@/lib/utils/utils'
 import Image from 'next/image'
 import { ReadOnlyTag } from '@/components/oppskrift/form/tag/RemovableTag'
-import { RecipeWithUser } from '@/types/domain'
+import { getPublicUrl, getRecipe } from '@/lib/data'
 
 interface Ingredient {
     ingredient: string
@@ -17,22 +16,11 @@ interface Ingredient {
 }
 
 const Oppskrift = async ({ params }: { params: { slug: string } }) => {
-    const supabase = createClient()
-
-    const { data, error } = await supabase
-        .from('recipe')
-        .select(`*, profile (id, first_name, middle_name, last_name)`)
-        .eq('slug', params.slug)
-        .single()
-    if (error) throw Error(`Finner ikke ${params.slug}`)
-
-    const recipe: RecipeWithUser = data
+    const recipe = await getRecipe(params.slug)
     const ingredients: Ingredient[] =
         recipe.ingredients as unknown as Ingredient[]
 
-    const { data: imageUrl } = supabase.storage
-        .from('images')
-        .getPublicUrl(recipe.image ?? '')
+    const publicUrl = recipe.image ? await getPublicUrl(recipe.image) : ''
 
     return (
         <div className="bg-white dark:bg-gray-800">
@@ -85,15 +73,21 @@ const Oppskrift = async ({ params }: { params: { slug: string } }) => {
                             </p>
                         </div>
                     </div>
-                    <div className="flex flex-col items-center overflow-hidden row-start-1 sm:col-start-2 row-span-1">
-                        <Image
-                            src={imageUrl.publicUrl}
-                            alt={recipe.title}
-                            className="h-[500px] w-[400px] object-cover rounded-lg object-center group-hover:opacity-75"
-                            width={400}
-                            height={500}
-                            priority
-                        />
+                    <div className="flex flex-col items-center justify-center overflow-hidden row-start-1 sm:col-start-2 row-span-1 rounded-lg">
+                        {publicUrl ? (
+                            <Image
+                                src={publicUrl}
+                                alt={recipe.title}
+                                className="h-[500px] w-[400px] object-cover object-center"
+                                width={400}
+                                height={500}
+                                priority
+                            />
+                        ) : (
+                            <p className="p-4 italic text-gray-500">
+                                Bilde mangler
+                            </p>
+                        )}
                     </div>
                 </div>
 

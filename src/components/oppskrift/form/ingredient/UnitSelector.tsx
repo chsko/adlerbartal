@@ -5,10 +5,9 @@ import {
     ComboboxOption,
     ComboboxOptions,
 } from '@headlessui/react'
-import { useCallback, useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import classNames from 'classnames'
-import { createClient } from '@/lib/utils/supabase/client'
 
 import { Ingredient } from '@/types/domain'
 
@@ -17,6 +16,7 @@ export interface UnitSelectorProps {
     selectedIngredient: Ingredient | null
     setSelectedUnit: (unit: string | null) => void
     disabled: boolean
+    units: string[]
 }
 
 export const UnitSelector = ({
@@ -24,33 +24,15 @@ export const UnitSelector = ({
     selectedIngredient,
     setSelectedUnit,
     disabled,
+    units,
 }: UnitSelectorProps) => {
     const [query, setQuery] = useState('')
-    const [units, setUnits] = useState<string[]>([])
-
-    const supabase = createClient()
-
-    const getUnits = useCallback(async () => {
-        const { data: units, error } = await supabase.rpc('get_unique_types', {
-            table_name: 'recipe',
-            column_name: 'ingredients',
-            field_name: 'unit',
-        })
-
-        if (error) return
-        setUnits(units)
-    }, [supabase])
-
-    useEffect(() => {
-        getUnits().then()
-    }, [])
-
     const filteredUnits =
         query === ''
             ? units
-            : units.filter((unit) => {
-                  return unit.toLowerCase().includes(query.toLowerCase())
-              })
+            : units.filter((unit) =>
+                  unit.toLowerCase().includes(query.toLowerCase())
+              )
 
     return (
         <Combobox

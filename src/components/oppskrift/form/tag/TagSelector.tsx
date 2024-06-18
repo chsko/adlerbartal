@@ -1,11 +1,4 @@
-import {
-    Dispatch,
-    SetStateAction,
-    useCallback,
-    useEffect,
-    useState,
-} from 'react'
-import { createClient } from '@/lib/utils/supabase/client'
+import { Dispatch, SetStateAction, useState } from 'react'
 import {
     Combobox,
     ComboboxButton,
@@ -20,31 +13,19 @@ import { RemovableTag } from '@/components/oppskrift/form/tag/RemovableTag'
 export interface TagSelectorProps {
     selectedTags: string[]
     setSelectedTags: Dispatch<SetStateAction<string[]>>
+    tags: string[]
 }
 
 export const TagSelector = ({
     selectedTags,
     setSelectedTags,
+    tags,
 }: TagSelectorProps) => {
     const [query, setQuery] = useState('')
-    const [existingTags, setExistingTags] = useState<string[]>([])
-
-    const supabase = createClient()
-
-    const getTags = useCallback(async () => {
-        const { data: tags, error } = await supabase.rpc('get_unique_tags')
-
-        if (error) return
-        setExistingTags(tags)
-    }, [supabase])
-
-    useEffect(() => {
-        getTags()
-    }, [])
+    const [existingTags, setExistingTags] = useState<string[]>(tags)
 
     const removeTag = (tag: string) => {
         setSelectedTags(selectedTags.filter((it) => it !== tag))
-        setExistingTags(existingTags.filter((it) => it !== tag))
     }
 
     const selectTag = (tag: string | null) => {

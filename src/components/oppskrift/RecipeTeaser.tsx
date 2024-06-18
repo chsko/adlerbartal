@@ -1,29 +1,34 @@
+'use server'
+
 import { BanknotesIcon, ClockIcon } from '@heroicons/react/24/outline'
 import { toNorwegianDateTimeString } from '@/lib/utils/utils'
 import Image from 'next/image'
-import { createClient } from '@/lib/utils/supabase/server'
 import Link from 'next/link'
 import { RecipeWithUser } from '@/types/domain'
+import { getPublicUrl } from '@/lib/data'
 
-export const RecipeTeaser = (props: { recipe: RecipeWithUser }) => {
-    const supabase = createClient()
-    const { data: imageUrl } = supabase.storage
-        .from('images')
-        .getPublicUrl(props.recipe.image ?? '')
+export const RecipeTeaser = async (props: { recipe: RecipeWithUser }) => {
+    const publicUrl = props.recipe.image
+        ? await getPublicUrl(props.recipe.image)
+        : ''
 
     return (
         <Link
             href={`/oppskrifter/${props.recipe.slug}`}
             className="group"
         >
-            <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                <Image
-                    src={imageUrl.publicUrl}
-                    alt={props.recipe.title}
-                    className="h-full w-full object-cover object-center group-hover:opacity-75"
-                    width={400}
-                    height={500}
-                />
+            <div className="flex flex-col items-center justify-center aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                {publicUrl ? (
+                    <Image
+                        src={publicUrl}
+                        alt={props.recipe.title}
+                        className="h-full w-full object-cover object-center sm:group-hover:opacity-75"
+                        width={400}
+                        height={500}
+                    />
+                ) : (
+                    <p className="p-4 italic text-gray-500">Bilde mangler</p>
+                )}
             </div>
             <div className="flex flex-col gap-2">
                 <h3 className="mt-4 text-lg text-gray-700">

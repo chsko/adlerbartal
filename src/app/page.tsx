@@ -1,16 +1,11 @@
-import { createClient } from '@/lib/utils/supabase/server'
+'use server'
 import { RecipeTeaser } from '@/components/oppskrift/RecipeTeaser'
 import { ClipboardDocumentListIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
-import { RecipeWithUser } from '@/types/domain'
+import { getRecipes } from '@/lib/data'
 
 const Recipes = async () => {
-    const supabase = createClient()
-    const { data, error } = await supabase
-        .from('recipe')
-        .select(`*, profile (id, first_name, middle_name, last_name)`)
-    if (error) throw error
-    const recipes: RecipeWithUser[] = data
+    const recipes = await getRecipes()
     return (
         <div className="bg-white">
             <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">

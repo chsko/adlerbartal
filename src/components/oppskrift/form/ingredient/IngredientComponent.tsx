@@ -1,3 +1,4 @@
+'use client'
 import { useState } from 'react'
 import { IngredientSelector } from '@/components/oppskrift/form/ingredient/IngredientSelector'
 import { UnitSelector } from '@/components/oppskrift/form/ingredient/UnitSelector'
@@ -10,12 +11,16 @@ export interface IngredientComponentProps {
     index: number
     unmountSelf: (ingredient: Ingredient) => void
     ingredient?: Ingredient
+    units: string[]
+    ingredientTypes: string[]
 }
 
 export const IngredientComponent = ({
     index,
     unmountSelf,
     ingredient,
+    units,
+    ingredientTypes,
 }: IngredientComponentProps) => {
     const [selectedIngredient, setSelectedIngredient] =
         useState<Ingredient | null>(ingredient ?? null)
@@ -48,12 +53,14 @@ export const IngredientComponent = ({
                     index={index}
                     selectedIngredient={selectedIngredient}
                     setSelectedType={setSelectedType}
+                    ingredientTypes={ingredientTypes}
                 />
                 <UnitSelector
                     index={index}
                     disabled={!selectedIngredient}
                     selectedIngredient={selectedIngredient}
                     setSelectedUnit={setSelectedUnit}
+                    units={units}
                 />
                 <AmountSelector
                     index={index}
