@@ -1,9 +1,8 @@
 'use server'
 
-import { createClient } from '@/lib/utils/supabase/server'
-import slugify from 'slugify'
+import { createOrUpdateRecipe, getUser } from '@/lib/data'
 
-interface IngredientFormData {
+export interface IngredientFormData {
     id: number | undefined
     title: string
     duration: number
@@ -29,11 +28,7 @@ export async function newRecipe(
     _: NewRecipeResult | null,
     formdata: FormData
 ): Promise<NewRecipeResult> {
-    const supabase = createClient()
-    const { data: userData } = await supabase.auth.getUser()
-
-    if (!userData.user)
-        throw Error('Forventer at bruker er satt. Kontakt Christian')
+    const userData = await getUser()
 
     let ingredients: Map<string, Ingredient> = new Map()
 
@@ -68,55 +63,7 @@ export async function newRecipe(
         tags: formdata.getAll('tags') as string[],
     }
 
-    let filePath: string | undefined
-
-    if (data.image?.size) {
-        const fileExt = data.image.name.split('.').pop()
-        filePath = `${userData.user.id}-${Math.random()}.${fileExt}`
-
-        const { error: uploadError } = await supabase.storage
-            .from('images')
-            .upload(filePath, data.image)
-
-        if (uploadError) {
-            return {
-                resultType: 'ERROR',
-                error: 'Kunne ikke laste opp fil. Prøv igjen.',
-            }
-        }
-    }
-
-    const { error: insertError } = await supabase.from('recipe').upsert(
-        {
-            id: data.id,
-            title: data.title,
-            price: data.price,
-            duration: data.duration,
-            image: filePath,
-            content: data.steps,
-            ingredients: data.ingredients.map((it) => ({
-                ingredient: it.ingredient,
-                unit: it.unit,
-                amount: it.amount,
-            })),
-            user_id: userData.user.id,
-            slug: slugify(data.title, { lower: true }),
-            tags: data.tags,
-        },
-        { onConflict: 'id' }
-    )
-
-    if (filePath && insertError) {
-        await supabase.storage.from('images').remove([filePath])
-        return {
-            resultType: 'ERROR',
-            error: 'Kunne ikke lagre oppskrift. Prøv igjen.',
-        }
-    }
-
-    return {
-        resultType: data.id ? 'UPDATED' : 'INSERTED',
-    }
+    return await createOrUpdateRecipe(data, userData.user)
 }
 
 const startsWithOneOf = (str: string, prefixes: string[]): boolean => {

@@ -1,5 +1,9 @@
 import { createClient } from '@/lib/utils/supabase/server'
 import { RecipeWithUser } from '@/types/domain'
+import { User } from '@supabase/auth-js'
+import slugify from 'slugify'
+import { IngredientFormData, NewRecipeResult } from '@/app/ny-oppskrift/actions'
+import { SupabaseClient } from '@supabase/supabase-js'
 
 export const getRecipes = async (): Promise<RecipeWithUser[]> => {
     const supabase = createClient()
@@ -64,3 +68,92 @@ export const getTags = async (): Promise<string[]> => {
     if (error) throw Error('Forventer å kunne finne nøkkelord')
     return tags
 }
+
+export const getUser = async (): Promise<{ user: User }> => {
+    const supabase = createClient()
+    const { data: userData, error } = await supabase.auth.getUser()
+    if (error || !userData) throw Error('Forventer innlogget bruker')
+    return userData
+}
+
+export const createOrUpdateRecipe = async (
+    data: IngredientFormData,
+    user: User
+): Promise<NewRecipeResult> => {
+    const supabase = createClient()
+
+    const filePath: string | undefined = data.image?.size
+        ? `${user.id}-${Math.random()}.${data.image.name.split('.').pop()}`
+        : undefined
+
+    const [{ error: imageError }, { data: recipeResult, error: recipeError }] =
+        await Promise.all([
+            insertOrUpdateImage(supabase, data.image, filePath),
+            insertOrUpdateRecipe(supabase, user.id, data, filePath),
+        ])
+
+    if (imageError) {
+        recipeResult?.id && (await deleteRecipe(supabase, recipeResult.id))
+        return {
+            resultType: 'ERROR',
+            error: 'Kunne ikke laste opp fil. Prøv igjen.',
+        }
+    }
+
+    if (recipeError) {
+        filePath && (await removeImage(supabase, filePath))
+        return {
+            resultType: 'ERROR',
+            error: 'Kunne ikke lagre oppskrift. Prøv igjen.',
+        }
+    }
+
+    return {
+        resultType: data.id ? 'UPDATED' : 'INSERTED',
+    }
+}
+
+const removeImage = async (client: SupabaseClient, filePath: string) =>
+    await client.storage.from('images').remove([filePath])
+
+const insertOrUpdateImage = async (
+    client: SupabaseClient,
+    image: File | undefined,
+    path: string | undefined
+) =>
+    path && image
+        ? await client.storage.from('images').upload(path, image)
+        : { error: null }
+
+const deleteRecipe = async (client: SupabaseClient, id: number) =>
+    await client.from('recipe').delete().eq('id', id)
+
+const insertOrUpdateRecipe = async (
+    client: SupabaseClient,
+    userId: string,
+    data: IngredientFormData,
+    filePath: string | undefined
+) =>
+    await client
+        .from('recipe')
+        .upsert(
+            {
+                id: data.id,
+                title: data.title,
+                price: data.price,
+                duration: data.duration,
+                image: filePath,
+                content: data.steps,
+                ingredients: data.ingredients.map((it) => ({
+                    ingredient: it.ingredient,
+                    unit: it.unit,
+                    amount: it.amount,
+                })),
+                user_id: userId,
+                slug: slugify(data.title, { lower: true }),
+                tags: data.tags,
+            },
+            { onConflict: 'id' }
+        )
+        .select('id')
+        .maybeSingle()
