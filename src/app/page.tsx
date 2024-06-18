@@ -1,11 +1,11 @@
 'use server'
-import { RecipeTeaser } from '@/components/oppskrift/RecipeTeaser'
 import { ClipboardDocumentListIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
-import { getRecipes } from '@/lib/data'
+import { Oppskrifter } from '@/components/Oppskrifter'
+import { Suspense } from 'react'
+import { Spinner } from '@/components/Spinner'
 
 const Recipes = async () => {
-    const recipes = await getRecipes()
     return (
         <div className="bg-white">
             <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
@@ -27,12 +27,9 @@ const Recipes = async () => {
                     </span>
                 </div>
                 <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-                    {recipes?.map((recipe) => (
-                        <RecipeTeaser
-                            key={recipe.id}
-                            recipe={recipe}
-                        />
-                    ))}
+                    <Suspense fallback={<Spinner />}>
+                        <Oppskrifter />
+                    </Suspense>
                 </div>
             </div>
         </div>
