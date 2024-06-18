@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/utils/supabase/server'
-import { RecipeTeaser } from '@/components/RecipeTeaser'
+import { RecipeTeaser } from '@/components/oppskrift/RecipeTeaser'
 import { ClipboardDocumentListIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { RecipeWithUser } from '@/types/domain'
