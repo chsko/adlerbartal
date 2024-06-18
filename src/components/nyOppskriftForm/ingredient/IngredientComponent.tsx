@@ -4,13 +4,7 @@ import { UnitSelector } from '@/components/nyOppskriftForm/ingredient/UnitSelect
 import { Button, Fieldset } from '@headlessui/react'
 import { AmountSelector } from '@/components/nyOppskriftForm/ingredient/AmountSelector'
 import { TrashIcon } from '@heroicons/react/24/outline'
-
-export interface Ingredient {
-    id?: string
-    ingredient?: string
-    amount?: number
-    unit?: string
-}
+import { Ingredient } from '@/types/domain'
 
 export interface IngredientComponentProps {
     index: number

@@ -1,7 +1,8 @@
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from '@/lib/utils/supabase/server'
 import { RecipeTeaser } from '@/components/RecipeTeaser'
 import { ClipboardDocumentListIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
+import { RecipeWithUser } from '@/types/domain'
 
 const Recipes = async () => {
     const supabase = createClient()

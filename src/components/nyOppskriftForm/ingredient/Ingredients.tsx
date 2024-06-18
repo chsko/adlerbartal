@@ -1,10 +1,8 @@
 import { Button, Fieldset } from '@headlessui/react'
 import { PlusIcon } from '@heroicons/react/24/outline'
-import {
-    Ingredient,
-    IngredientComponent,
-} from '@/components/nyOppskriftForm/ingredient/IngredientComponent'
+import { IngredientComponent } from '@/components/nyOppskriftForm/ingredient/IngredientComponent'
 import { nanoid } from 'nanoid'
+import { Ingredient } from '@/types/domain'
 
 export interface IngredientsProps {
     ingredients: Ingredient[]

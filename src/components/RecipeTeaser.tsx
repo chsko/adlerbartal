@@ -1,8 +1,9 @@
 import { BanknotesIcon, ClockIcon } from '@heroicons/react/24/outline'
-import { toNorwegianDateTimeString } from '@/utils/utils'
+import { toNorwegianDateTimeString } from '@/lib/utils/utils'
 import Image from 'next/image'
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from '@/lib/utils/supabase/server'
 import Link from 'next/link'
+import { RecipeWithUser } from '@/types/domain'
 
 export const RecipeTeaser = (props: { recipe: RecipeWithUser }) => {
     const supabase = createClient()

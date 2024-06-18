@@ -1,5 +1,6 @@
 import { Input } from '@headlessui/react'
-import { Ingredient } from '@/components/nyOppskriftForm/ingredient/IngredientComponent'
+
+import { Ingredient } from '@/types/domain'
 
 export interface AmountSelectorProps {
     index: number

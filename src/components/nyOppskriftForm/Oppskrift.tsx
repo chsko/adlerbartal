@@ -15,8 +15,8 @@ import { Description, Field, Label, Legend } from '@headlessui/react'
 import { Steps } from '@/components/nyOppskriftForm/Steps'
 import { Ingredients } from '@/components/nyOppskriftForm/ingredient/Ingredients'
 import { Spinner } from '@/components/Spinner'
-import { Ingredient } from '@/components/nyOppskriftForm/ingredient/IngredientComponent'
 import { nanoid } from 'nanoid'
+import { Ingredient, RecipeWithUser } from '@/types/domain'
 
 export interface OppskriftProps {
     heading: string

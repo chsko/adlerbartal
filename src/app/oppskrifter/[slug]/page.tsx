@@ -1,13 +1,14 @@
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from '@/lib/utils/supabase/server'
 import Link from 'next/link'
 import {
     ArrowLongLeftIcon,
     BanknotesIcon,
     ClockIcon,
 } from '@heroicons/react/24/outline'
-import { toNorwegianDateTimeString } from '@/utils/utils'
+import { toNorwegianDateTimeString } from '@/lib/utils/utils'
 import Image from 'next/image'
 import { ReadOnlyTag } from '@/components/nyOppskriftForm/tag/RemovableTag'
+import { RecipeWithUser } from '@/types/domain'
 
 interface Ingredient {
     ingredient: string

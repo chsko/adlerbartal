@@ -8,8 +8,9 @@ import {
 import { useCallback, useEffect, useState } from 'react'
 import { ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import classNames from 'classnames'
-import { createClient } from '@/utils/supabase/client'
-import { Ingredient } from '@/components/nyOppskriftForm/ingredient/IngredientComponent'
+import { createClient } from '@/lib/utils/supabase/client'
+
+import { Ingredient } from '@/types/domain'
 
 export interface UnitSelectorProps {
     index: number

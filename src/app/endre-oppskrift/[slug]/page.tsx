@@ -1,5 +1,6 @@
 import Oppskrift from '@/components/nyOppskriftForm/Oppskrift'
-import { createClient } from '@/utils/supabase/client'
+import { createClient } from '@/lib/utils/supabase/client'
+import { RecipeWithUser } from '@/types/domain'
 
 const Page = async ({ params }: { params: { slug: string } }) => {
     const supabase = createClient()
