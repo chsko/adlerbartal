@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { IngredientSelector } from '@/components/nyOppskriftForm/ingredient/IngredientSelector'
-import { UnitSelector } from '@/components/nyOppskriftForm/ingredient/UnitSelector'
+import { IngredientSelector } from '@/components/oppskrift/form/ingredient/IngredientSelector'
+import { UnitSelector } from '@/components/oppskrift/form/ingredient/UnitSelector'
 import { Button, Fieldset } from '@headlessui/react'
-import { AmountSelector } from '@/components/nyOppskriftForm/ingredient/AmountSelector'
+import { AmountSelector } from '@/components/oppskrift/form/ingredient/AmountSelector'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import { Ingredient } from '@/types/domain'
 

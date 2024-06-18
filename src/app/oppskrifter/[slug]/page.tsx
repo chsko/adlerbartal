@@ -7,7 +7,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { toNorwegianDateTimeString } from '@/lib/utils/utils'
 import Image from 'next/image'
-import { ReadOnlyTag } from '@/components/nyOppskriftForm/tag/RemovableTag'
+import { ReadOnlyTag } from '@/components/oppskrift/form/tag/RemovableTag'
 import { RecipeWithUser } from '@/types/domain'
 
 interface Ingredient {

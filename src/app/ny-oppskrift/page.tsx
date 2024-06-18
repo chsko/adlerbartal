@@ -1,6 +1,6 @@
 'use client'
 
-import Oppskrift from '@/components/nyOppskriftForm/Oppskrift'
+import Oppskrift from '@/components/oppskrift/form/Oppskrift'
 
 const Page = () => (
     <Oppskrift

@@ -1,4 +1,4 @@
-import Oppskrift from '@/components/nyOppskriftForm/Oppskrift'
+import Oppskrift from '@/components/oppskrift/form/Oppskrift'
 import { createClient } from '@/lib/utils/supabase/client'
 import { RecipeWithUser } from '@/types/domain'
 

@@ -1,6 +1,6 @@
 import { Button, Fieldset } from '@headlessui/react'
 import { PlusIcon } from '@heroicons/react/24/outline'
-import { IngredientComponent } from '@/components/nyOppskriftForm/ingredient/IngredientComponent'
+import { IngredientComponent } from '@/components/oppskrift/form/ingredient/IngredientComponent'
 import { nanoid } from 'nanoid'
 import { Ingredient } from '@/types/domain'
 

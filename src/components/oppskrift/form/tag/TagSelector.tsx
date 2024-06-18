@@ -15,7 +15,7 @@ import {
 } from '@headlessui/react'
 import { ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import classNames from 'classnames'
-import { RemovableTag } from '@/components/nyOppskriftForm/tag/RemovableTag'
+import { RemovableTag } from '@/components/oppskrift/form/tag/RemovableTag'
 
 export interface TagSelectorProps {
     selectedTags: string[]
