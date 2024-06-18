@@ -58,7 +58,7 @@ const Oppskrift = async ({ params }: { params: { slug: string } }) => {
                             <BanknotesIcon className="h-7 w-7" />
                             {recipe.price} kr
                         </p>
-                        <div className="mt-4">
+                        <div className="mt-4 flex flex-row gap-2 w-full sm:w-fit flex-wrap">
                             {recipe.tags.map((it, idx) => (
                                 <ReadOnlyTag
                                     tag={it}
