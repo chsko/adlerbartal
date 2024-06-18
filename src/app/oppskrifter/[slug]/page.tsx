@@ -7,7 +7,7 @@ import {
 import { toNorwegianDateTimeString } from '@/lib/utils/utils'
 import Image from 'next/image'
 import { ReadOnlyTag } from '@/components/oppskrift/form/tag/RemovableTag'
-import { getPublicUrl, getRecipe } from '@/lib/data'
+import { getPublicUrl, getRecipe, getUser } from '@/lib/data'
 
 interface Ingredient {
     ingredient: string
@@ -16,11 +16,16 @@ interface Ingredient {
 }
 
 const Oppskrift = async ({ params }: { params: { slug: string } }) => {
-    const recipe = await getRecipe(params.slug)
+    const [recipe, user] = await Promise.all([
+        getRecipe(params.slug),
+        getUser(),
+    ])
     const ingredients: Ingredient[] =
         recipe.ingredients as unknown as Ingredient[]
 
     const publicUrl = recipe.image ? await getPublicUrl(recipe.image) : ''
+
+    const ownedByUser = recipe.user_id === user.user.id
 
     return (
         <div className="bg-white dark:bg-gray-800">
@@ -48,6 +53,13 @@ const Oppskrift = async ({ params }: { params: { slug: string } }) => {
                             : `opprettet ${toNorwegianDateTimeString(recipe.created_at)}`}
                     </p>
                 </div>
+                {ownedByUser && (
+                    <div className="mt-2 underline text-indigo-600 hover:text-indigo-400">
+                        <Link href={`/endre-oppskrift/${params.slug}`}>
+                            Rediger
+                        </Link>
+                    </div>
+                )}
                 <div className="mt-10 grid sm:grid-cols-2 sm:grid-rows-1 grid-rows-1 grid-cols-1 gap-y-2">
                     <div className="col-start-1">
                         <p className="flex flex-row items-center gap-2 text-md ">
