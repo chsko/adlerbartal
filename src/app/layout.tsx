@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import React from 'react'
 import dynamic from 'next/dynamic'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -29,6 +30,7 @@ export default function RootLayout({
             className={'h-full bg-white'}
         >
             <body className={inter.className + 'h-full'}>
+                <SpeedInsights />
                 <Toaster
                     position="bottom-center"
                     reverseOrder={false}
